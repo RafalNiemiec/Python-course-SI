@@ -63,14 +63,20 @@ def simpleSort(list):
 
 def entryPoint(fullList, minimal):
     complete = []
-    j = 0
+    j, n = 0, []
+    indexes = {}
     for i in range(len(fullList)):
         if fullList[i]>minimal:
             complete.append(i)
             j += 1
+            indexes[fullList[i]] = i
             if j >= 3:
-                sortTest(complete)
-    return(fullList)
+                simpleSort(complete)
+                for w in range(3):
+                    n.append(indexes[fullList[complete[w]]])
+                print('Input: ', fullList, '\n', 'Border value: ', minimal, '\n', 'Output: ', n, '\n', 100*'-')
+                return(n)
+
 
 def compareTime(lenght):
     list = createArray(lenght)
@@ -79,8 +85,9 @@ def compareTime(lenght):
     time2 = time()
     simpleSort(list)
     time3 = time()
-    print([['simple sort', time2-time1], ['merge sort', time3-time2]])
+    print('Time of simple sort: ', time2-time1, '\n', 'Time of merge sort: ', time3-time2, '\n', 100*'-')
 
 
+entryPoint(createArray(50), 4)
 compareTime(100)
 compareTime(1000)
