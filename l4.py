@@ -3,20 +3,27 @@ import requests
 wallet = 0
 
 def getData(amountMoney):
+
+    bitbay = requests.get('https://bitbay.net/API/Public/BTCUSD/ticker.json').json()
+    bittrex = requests.get('https://api.bittrex.com/api/v1.1/public/getticker?market=USD-BTC').json()
+    coinbase = requests.get('https://api.coinbase.com/v2/prices/BTC-USD/buy').json()
+    bitstamp = requests.get('https://www.bitstamp.net/api/ticker').json()
+
+
     buyList = [
-        float(requests.get('https://bitbay.net/API/Public/BTCUSD/ticker.json').json()['ask']),
-        float(requests.get('https://api.bittrex.com/api/v1.1/public/getticker?market=USD-BTC').json()['result']['Ask']),
-        float(requests.get('https://api.coinbase.com/v2/prices/BTC-USD/buy').json()['data']['amount']),
-        float(requests.get('https://www.bitstamp.net/api/ticker').json()['ask'])
+        float(bitbay['ask']),
+        float(bittrex['result']['Ask']),
+        float(coinbase['data']['amount']),
+        float(bitstamp['ask'])
     ]
     sellList = [
-        float(requests.get('https://bitbay.net/API/Public/BTCUSD/ticker.json').json()['bid']),
-        float(requests.get('https://api.bittrex.com/api/v1.1/public/getticker?market=USD-BTC').json()['result']['Bid']),
-        float(requests.get('https://api.coinbase.com/v2/prices/BTC-USD/sell').json()['data']['amount']),
-        float(requests.get('https://www.bitstamp.net/api/ticker').json()['bid'])
+        float(bitbay['bid']),
+        float(bittrex['result']['Bid']),
+        float(coinbase['data']['amount']),
+        float(bitstamp['bid'])
     ]
     #fees = [BitBay, BitTrex, CoinBase, BitStamp]
-    fees = [0.01, 0.002, 0.005, 0.005]
+    fees = [0.001, 0.002, 0.0025, 0.005]
 
     trading(min(buyList), max(sellList), amountMoney, fees[buyList.index(min(buyList))])
 
